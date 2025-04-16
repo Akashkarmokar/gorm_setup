@@ -1,3 +1,45 @@
+# services:
+
+#   db:
+#     image: postgres:15
+#     container_name: postgres_container_go_air_app
+#     restart: always
+#     environment:
+#       POSTGRES_DB: mydb
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: go_air_app
+#     volumes:
+#       - .:/app
+#       - go_mod_cache:/go/pkg/mod
+#     ports:
+#       - "8080:8080"
+#     depends_on:
+#       - db
+#     environment:
+#       - GO111MODULE=on
+#       - DB_HOST=db
+#       - DB_PORT=5432
+#       - DB_USER=postgres
+#       - DB_PASSWORD=postgres
+#       - DB_NAME=mydb
+#     command: ["air", "-c", ".air.toml"]
+
+# volumes:
+#   go_mod_cache:
+#   pg_data:
+
+
+version: '3.8'
+
 services:
   app:
     build:
@@ -7,11 +49,44 @@ services:
     volumes:
       - .:/app
       - go_mod_cache:/go/pkg/mod
-    # ports:
-    #   - "8080:8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - GO111MODULE=on
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=mydb
     command: ["air", "-c", ".air.toml"]
-    # environment:
-    #   - GO111MODULE=on
+
+  postgres:
+    image: postgres:16
+    container_name: go_air_app_postgres_container
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+  # pg-admin:
+  #   image: dpage/pgadmin4:8
+  #   container_name: protfolio_pgAdmin_container
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #     - PGADMIN_LISTEN_PORT=5050
+  #   ports:
+  #     - "5050:5050"
+  #   volumes:
+  #     - pgadmin_data:/var/lib/postgresql/data
 
 volumes:
   go_mod_cache:
+  postgres_data:
+  # pgadmin_data:
