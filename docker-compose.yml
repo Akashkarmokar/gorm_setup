@@ -55,11 +55,11 @@ services:
       - postgres
     environment:
       - GO111MODULE=on
-      - DB_HOST=db
+      - DB_HOST=localhost
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=postgres
-      - DB_NAME=mydb
+      - DB_NAME=test_db
     command: ["air", "-c", ".air.toml"]
 
   postgres:
