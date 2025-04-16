@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build:
@@ -7,11 +9,33 @@ services:
     volumes:
       - .:/app
       - go_mod_cache:/go/pkg/mod
-    # ports:
-    #   - "8080:8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - GO111MODULE=on
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=test_db
     command: ["air", "-c", ".air.toml"]
-    # environment:
-    #   - GO111MODULE=on
+
+  postgres:
+    image: postgres:16
+    container_name: go_air_app_postgres_container
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
 
 volumes:
   go_mod_cache:
+  postgres_data:
+  # pgadmin_data:
