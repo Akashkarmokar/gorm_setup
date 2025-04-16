@@ -1,0 +1,7 @@
+# Air temp files
+tmp/
+# .air.toml
+
+# Docker files themselves (optional)
+Dockerfile
+docker-compose.yml

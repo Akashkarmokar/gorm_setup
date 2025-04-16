@@ -1,0 +1,40 @@
+# # version: '3.8'
+
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     container_name: go_air_app
+#     volumes:
+#       - .:/app
+#       # - go_mod_cache:/go/pkg/mod
+#     ports:
+#       - "8080:8080"  # adjust based on your app's port
+#     command: ["air", "-c", ".air.toml"]
+#     environment:
+#       - GO111MODULE=on
+
+# # volumes:
+# #   go_mod_cache:
+
+
+# version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go_air_app
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    # ports:
+    #   - "8080:8080"
+    command: ["air", "-c", ".air.toml"]
+    # environment:
+    #   - GO111MODULE=on
+
+volumes:
+  go_mod_cache:
