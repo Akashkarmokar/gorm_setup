@@ -34,8 +34,9 @@ func main() {
 		fmt.Println("Database connection established !!")
 	}
 
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Profile{})
 
-	operatoins.InsertToTheDataBase(db)
+	// operatoins.InsertToTheDataBase(db)
+	operatoins.OperationForBelongToModel(db)
 
 }
